@@ -13,6 +13,7 @@ app.get( '/', function( req, res ){
   res.contentType( 'application/json; charset=UTF-8' );
   if( settings_cors ){
     res.setHeader( 'Access-Control-Allow-Origin', settings_cors );
+    res.setHeader( 'Vary', 'Origin' );
   }
 
   axios.get( fxserver ).then( function( result ){
