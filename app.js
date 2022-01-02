@@ -7,8 +7,13 @@ app.use( express.Router() );
 
 var fxserver = 'http://www.gaitame.com/rate/neo20/rate_UTF8.asp';
 
+var settings_cors = 'CORS' in process.env ? process.env.CORS : '';
+
 app.get( '/', function( req, res ){
   res.contentType( 'application/json; charset=UTF-8' );
+  if( settings_cors ){
+    res.setHeader( 'Access-Control-Allow-Origin', settings_cors );
+  }
 
   axios.get( fxserver ).then( function( result ){
     var rate = {};
