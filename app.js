@@ -5,7 +5,9 @@ var express = require( 'express' ),
 
 app.use( express.Router() );
 
-var fxserver = 'http://www.gaitame.com/rate/neo20/rate_UTF8.asp';
+//. #1
+//var fxserver = 'http://www.gaitame.com/rate/neo20/rate_UTF8.asp';
+var fxserver = 'https://navi.gaitame.com/v3/info/prices/rate';
 
 var settings_cors = 'CORS' in process.env ? process.env.CORS : '';
 
@@ -18,16 +20,14 @@ app.get( '/', function( req, res ){
 
   axios.get( fxserver ).then( function( result ){
     var rate = {};
-    var csv = result.data;
-    csv = csv.split( "\r" ).join( "" );
-    var lines = csv.split( "\n" );
-    for( var i = 0; i < lines.length; i ++ ){
-      var line = lines[i];
-      var x = line.split( "," );
-      if( x.length > 1 ){
-        var name = x[0];
-        var bid = x[1];
-        rate[name] = parseFloat( bid );
+    //console.log( result );
+    if( result.status == 200 && result.data && result.data.data ){
+      result = result.data;
+      for( var i = 0; i < result.data.length; i ++ ){
+        var line = result.data[i];
+        var name = line.pair;
+        var bid = line.bid;
+        rate[name] = bid;
       }
     }
 
