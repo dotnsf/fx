@@ -7,7 +7,7 @@ app.use( express.Router() );
 
 //. #1
 //var fxserver = 'http://www.gaitame.com/rate/neo20/rate_UTF8.asp';
-var fxserver = 'https://navi.gaitame.com/v3/info/prices/rate';
+var fxserver = 'https://navi.gaitame.com/v3/info/prices/rate';  // new
 
 var settings_cors = 'CORS' in process.env ? process.env.CORS : '';
 
