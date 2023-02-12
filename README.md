@@ -12,4 +12,4 @@ This code is licensed under MIT.
 
 ## Copyright
 
-2021-2022 K.Kimura @ Juge.Me all rights reserved.
+2021-2023 K.Kimura @ Juge.Me all rights reserved.
