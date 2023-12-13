@@ -43,6 +43,38 @@ app.get( '/', function( req, res ){
   });
 });
 
+app.post( '/', function( req, res ){
+  res.contentType( 'application/json; charset=UTF-8' );
+  if( settings_cors ){
+    res.setHeader( 'Access-Control-Allow-Origin', settings_cors );
+    res.setHeader( 'Vary', 'Origin' );
+  }
+
+  axios.get( fxserver ).then( function( result ){
+    var rate = {};
+    //console.log( result );
+    if( result.status == 200 && result.data && result.data.data ){
+      result = result.data;
+      for( var i = 0; i < result.data.length; i ++ ){
+        var line = result.data[i];
+        var name = line.pair;
+        var bid = line.bid;
+        rate[name] = bid;
+      }
+    }
+
+    var datetime = timestamp2datetime( ( new Date() ).getTime() );
+
+    res.write( JSON.stringify( { status: true, datetime: datetime, rate: rate }, null, 2 ) );
+    res.end();
+  }).catch( function( err ){
+    console.log( err );
+    res.status( 400 );
+    res.write( JSON.stringify( { status: false, message: err }, null, 2 ) );
+    res.end();
+  });
+});
+
 function timestamp2datetime( ts ){
   var dt = new Date( ts );
   var yyyy = dt.getFullYear();
