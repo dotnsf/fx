@@ -43,7 +43,7 @@ app.get( '/', function( req, res ){
   });
 });
 
-app.post( '/', function( req, res ){
+app.post( '/webhook.json', function( req, res ){
   res.contentType( 'application/json; charset=UTF-8' );
   if( settings_cors ){
     res.setHeader( 'Access-Control-Allow-Origin', settings_cors );
