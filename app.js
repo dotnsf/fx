@@ -1,8 +1,11 @@
 //. app.js
 var express = require( 'express' ),
     axios = require( 'axios' ),
+    bodyParser = require( 'body-parser' ),
     app = express();
 
+app.use( bodyParser.urlencoded( { extended: true } ) );
+app.use( bodyParser.json( { limit: '10mb' } ) );
 app.use( express.Router() );
 
 //. #1
@@ -50,6 +53,8 @@ app.post( '/webhook.json', function( req, res ){
     res.setHeader( 'Vary', 'Origin' );
   }
 
+  var pair = req.body.pair ? req.body.pair : null;
+
   axios.get( fxserver ).then( function( result ){
     var rate = {};
     //console.log( result );
@@ -61,6 +66,10 @@ app.post( '/webhook.json', function( req, res ){
         var bid = line.bid;
         rate[name] = bid;
       }
+    }
+
+    if( rate && pair && rate[pair] ){
+      rate = rate[pair];
     }
 
     var datetime = timestamp2datetime( ( new Date() ).getTime() );
